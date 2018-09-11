@@ -17,7 +17,7 @@ import string_gen
 DEBUG = True
 
 if __name__ == "__main__":
-	stringen = string_gen.StringGenerator()
+	stringen = string_gen.custom_gen()
 	stringen = stringen.generate()
 	for i in range(0, 1000):
 		print( next(stringen) )
