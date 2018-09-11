@@ -10,3 +10,15 @@ Schema Matching
 
 			  Value range modelling based on GAN approach ?
 """
+
+import pdb
+import string_gen
+
+DEBUG = True
+
+if __name__ == "__main__":
+	stringen = string_gen.StringGenerator()
+	stringen = stringen.generate()
+	for i in range(0, 1000):
+		print( next(stringen) )
+
