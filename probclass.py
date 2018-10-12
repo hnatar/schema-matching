@@ -26,16 +26,30 @@ class CharDistribution:
                 else:
                     r *= decay
             else:
-                r *= self.freq[i][word[i]]
+                r *= (self.freq[i][word[i]]) / sum( self.freq[i].values() )
         return r
 
 
-tmp = CharDistribution()
+Names = CharDistribution()
+Phone = CharDistribution()
 with open('names.txt', 'r') as f:
     for name in f.readlines():
         name = name.strip()
         for i in range(0, len(name)):
-            tmp.seen(i, name[i])
-print( tmp.prob('123') )
+            Names.seen(i, name[i])
+with open('phonenum.txt', 'r') as f:
+    for phone in f.readlines():
+        phone = phone.strip()
+        for i in range(0, len(phone)):
+            Phone.seen(i, phone[i])
+
+print( Names.prob('Hari') )
+print( Phone.prob('Hari') )
+
+print( Names.prob('562 417-6701') )
+print( Phone.prob('562 417-6701') )
+
+print( Names.prob('H4rishankar') )
+print( Phone.prob('this is 45123 hari') )
 
 
