@@ -42,14 +42,12 @@ with open('phonenum.txt', 'r') as f:
         phone = phone.strip()
         for i in range(0, len(phone)):
             Phone.seen(i, phone[i])
-
-print( Names.prob('Hari') )
-print( Phone.prob('Hari') )
-
-print( Names.prob('562 417-6701') )
-print( Phone.prob('562 417-6701') )
-
-print( Names.prob('H4rishankar') )
-print( Phone.prob('this is 45123 hari') )
+for i in range(0, 4):
+    Phone.plot(i)
+for test in ['(562)-417-6701']:
+    print(test)
+    print( 'P(name)=', Names.prob(test) )
+    print( 'P(num)=', Phone.prob(test) )
+    print()
 
 
