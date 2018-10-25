@@ -49,5 +49,3 @@ for test in ['(562)-417-6701']:
     print( 'P(name)=', Names.prob(test) )
     print( 'P(num)=', Phone.prob(test) )
     print()
-
-
