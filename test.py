@@ -13,6 +13,7 @@ Schema Matching
 
 import pdb
 import string_gen
+import sys
 
 DEBUG = True
 
@@ -21,5 +22,5 @@ if __name__ == "__main__":
     stringen = stringen.generate()
     for i in range(0, 1000):
         print( next(stringen) )
-    return 0
+    sys.exit(0)
 
