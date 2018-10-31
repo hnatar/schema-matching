@@ -21,4 +21,5 @@ if __name__ == "__main__":
 	stringen = stringen.generate()
 	for i in range(0, 1000):
 		print( next(stringen) )
+        return 0
 
