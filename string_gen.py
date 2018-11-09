@@ -79,10 +79,3 @@ def whitespace_noise(string_generator):
 @whitespace_noise
 class custom_gen(StringGenerator):
 	pass
-
-
-
-
-
-
-
