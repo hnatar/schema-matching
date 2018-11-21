@@ -157,6 +157,7 @@ def match_names(a, b):
     print(a)
     print(b)
 
+    # pickle file must be regenerated if new words added
     print( split_into_chunks('camerametadata') )
     print( split_into_chunks('username') )
     print( split_into_chunks('deptName') )
