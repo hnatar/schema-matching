@@ -106,6 +106,30 @@ def split_into_chunks(word):
                 return res
     return [word]
 
+def chunk_similarity(a,b):
+    chunked_a, chunked_b = split_into_chunks(a), split_into_chunks(b)
+    print()
+    print(f"Matching: '{a}' with '{b}'")
+    print(f'{a} -> {chunked_a}')
+    print(f'{b} -> {chunked_b}')
+    unmatched = set(range(len(chunked_a)))
+    unmatched_b = set(range(len(chunked_b)))
+    matches = []
+    char_match = 0
+    for i in unmatched:
+        pq = []
+        for j in unmatched_b:
+            pq.append( (nltk.edit_distance(chunked_a[i], chunked_b[j]), j) )
+        pq = sorted(pq)
+        if not pq:
+            continue
+        best = pq[0][1]
+        best_match = chunked_b[best]
+        matches.append( (chunked_a[i], best_match) )
+        unmatched_b.remove(j)
+    for row in matches:
+        print(row)
+    return matches
 
 def match_names(a, b):
     """
@@ -145,40 +169,31 @@ def match_names(a, b):
         b = list(map(lambda i: b[i], set(range(len(b))) - _matched_b))
         return (Res, a, b)
     exact_matches, a, b = exact_match(a,b)
+    print('Exact matches: ')
+    for row in exact_matches:
+        print(row)
 
     """ chunk matching """
-    def chunk_similarity(a,b):
-        chunked_a, chunked_b = split_into_chunks(a), split_into_chunks(b)
-        print()
-        print(f"Matching: '{a}' with '{b}'")
-        print(f'{a} -> {chunked_a}')
-        print(f'{b} -> {chunked_b}')
-        unmatched = set(range(len(chunked_a)))
-        unmatched_b = set(range(len(chunked_b)))
-        matches = []
-        char_match = 0
-        for i in unmatched:
-            pq = []
-            for j in unmatched_b:
-                pq.append( (nltk.edit_distance(chunked_a[i], chunked_b[j]), j) )
-            pq = sorted(pq)
-            if not pq:
-                continue
-            best = pq[0][1]
-            best_match = chunked_b[best]
-            matches.append( (chunked_a[i], best_match) )
-            unmatched_b.remove(j)
-        for row in matches:
-            print(row)
-        return matches
+
 
     
     print('Remaining: ')
     print(a)
     print(b)
+    return
 
+
+
+if __name__ == "__main__":
+    a = ['fname', 'lname', 'firstname']
+    b = ['FName', 'lastname', 'cameraMetadata']
+    match_names(a,b)
+
+    print()
+    print( 'Testing chunking...' )
     # pickle file must be regenerated if new words added
     print( split_into_chunks('camerametadata') )
+    print( split_into_chunks('datfromCam') )
     print( split_into_chunks('username') )
     print( split_into_chunks('deptName') )
     print( split_into_chunks('department') )
@@ -189,11 +204,6 @@ def match_names(a, b):
 
     chunk_similarity( 'vehicleDescription', 'vehicleDescripton' )
 
-
-if __name__ == "__main__":
-    a = ['fname', 'lname', 'firstname']
-    b = ['FName', 'lastname', 'cameraMetadata']
-    match_names(a,b)
 
 
     """
