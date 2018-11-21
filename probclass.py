@@ -4,6 +4,7 @@ import collections
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
+import random
 
 """
 Given sample training data for all classes, use Naive-Bayes at character level
@@ -18,7 +19,8 @@ Log prob. to minimize underflow issue, compare P(word|class1) and P(word|class2)
 """
 
 class CharDistribution:
-    def __init__(self):
+    def __init__(self, label):
+        self.label = label
         self.freq = collections.defaultdict(dict)
         self.CharCount = collections.defaultdict(int)
         self.CharTotal = 0
@@ -47,26 +49,54 @@ class CharDistribution:
                 r += np.log(self.freq[i][word[i]]) - np.log( sum(self.freq[i].values()) )
         return r
     def stats(self):
-        print( np.mean(self.observed_len) )
-        print( np.var(self.observed_len) )
+        print( f'Statistics for {self.label}:' )
+        print( 'Mean Length: ', '%.2f' % np.mean(self.observed_len) )
+        print( 'Variance Length: ', '%.2f' % np.var(self.observed_len) )
 
-Names = CharDistribution()
-Phone = CharDistribution()
-with open('firstnames.txt', 'r') as f:
-    for name in f.readlines():
-        name = name.strip()
-        Names.seen_word(name)
-print('stats=')
-Names.stats()
-with open('phonenum.txt', 'r') as f:
-    for phone in f.readlines():
-        phone = phone.strip()
-        Phone.seen_word(phone)
-Phone.stats()
-for i in range(0,4):
-    Names.plot(i)
-for test in ['1337code']:
-    print(test)
-    print( 'P(name)=',  Names.logprob(test) )
-    print( 'P(num)=',  Phone.logprob(test) )
-    print()
+class SequenceModel:
+    def __init__(self, ListOfModels):
+        self.seq = ListOfModels
+        self.len = [ random.randint(1, 10) for i in self.seq ]
+
+    def logprob(self, word):
+        r = 0.0
+        cur = 0
+        for model in range(0, len(self.seq)):
+            curword, word = word[:self.len[model]], word[self.len[model]:]
+            if not curword:
+                return r
+            r += self.seq[model].logprob(word)
+        return r
+
+
+if __name__ == "__main__":
+    Names = CharDistribution('Names')
+    Phone = CharDistribution('Phone')
+    NameList = []
+    PhoneList = []
+
+    with open('firstnames.txt', 'r') as f:
+        for name in f.readlines():
+            name = name.strip()
+            Names.seen_word(name)
+            NameList.append(name)
+    Names.stats()
+
+    with open('phonenum.txt', 'r') as f:
+        for phone in f.readlines():
+            phone = phone.strip()
+            Phone.seen_word(phone)
+            PhoneList.append(phone)
+    Phone.stats()
+
+    table = []
+    for i in range(10):
+        r1 = random.choice(range(len(NameList)))
+        r2 = random.choice(range(len(PhoneList)))
+        # 1 or 2 are ground truth labels (name or phone, to make reading easier)
+        table.append( (1, '%15s %.2f %.2f' % (NameList[r1], Names.logprob(NameList[r1]), Phone.logprob(NameList[r1]))) )
+        table.append( (2, '%15s %.2f %.2f' % (PhoneList[r2], Names.logprob(PhoneList[r2]), Phone.logprob(PhoneList[r2]))) )
+    table = sorted(table)
+    for i, row in enumerate(table):
+        print( '%3d %s' % (i, row[1]) )
+
