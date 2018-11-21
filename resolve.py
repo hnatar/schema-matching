@@ -16,6 +16,7 @@ import collections
 from functools import reduce
 import pickle
 from trie import Trie
+import nltk
 
 class JSONSchema:
     """ Wrapper class to handle working with JSON schema files. """
@@ -120,11 +121,7 @@ def match_names(a, b):
 
         2. Chunk similarity - Each name in listA is chunked into
         pieces using an English dictionary and terms from user stories.
-        When comparing name x and name y, exact chunks common chunks
-
-        2. Edit distance matching - Levenshtein distance used
-        to order unmatched words from phase 1, and best-K matches
-        are added as 
+        When comparing the chunked name pairs, edit distance similarity is used.
     """
     Res = []
 
@@ -151,7 +148,30 @@ def match_names(a, b):
 
     """ chunk matching """
     def chunk_similarity(a,b):
-        Chunked = {}
+        chunked_a, chunked_b = split_into_chunks(a), split_into_chunks(b)
+        print()
+        print(f"Matching: '{a}' with '{b}'")
+        print(f'{a} -> {chunked_a}')
+        print(f'{b} -> {chunked_b}')
+        unmatched = set(range(len(chunked_a)))
+        unmatched_b = set(range(len(chunked_b)))
+        matches = []
+        char_match = 0
+        for i in unmatched:
+            pq = []
+            for j in unmatched_b:
+                pq.append( (nltk.edit_distance(chunked_a[i], chunked_b[j]), j) )
+            pq = sorted(pq)
+            if not pq:
+                continue
+            best = pq[0][1]
+            best_match = chunked_b[best]
+            matches.append( (chunked_a[i], best_match) )
+            unmatched_b.remove(j)
+        for row in matches:
+            print(row)
+        return matches
+
     
     print('Remaining: ')
     print(a)
@@ -163,6 +183,12 @@ def match_names(a, b):
     print( split_into_chunks('deptName') )
     print( split_into_chunks('department') )
     print( split_into_chunks('apartment') )
+    print( split_into_chunks('uploadDate') )
+    print( split_into_chunks('vehicleDescription') )
+    print( split_into_chunks('vehicleDescripton') )
+
+    chunk_similarity( 'vehicleDescription', 'vehicleDescripton' )
+
 
 if __name__ == "__main__":
     a = ['fname', 'lname', 'firstname']
