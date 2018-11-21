@@ -14,6 +14,8 @@ Edges can have attributes which can carry information
 import json
 import collections
 from functools import reduce
+import pickle
+from trie import Trie
 
 class JSONSchema:
     """ Wrapper class to handle working with JSON schema files. """
@@ -72,6 +74,38 @@ class TreeNode:
         print( "List of optional keys: " )
         print( ', '.join(optional) )
 
+
+userwords = None
+with open('pickled_userwords', 'rb') as f:
+    userwords = pickle.load(f)
+
+def split_into_chunks(word):
+    if not word:
+        return []
+    word = word.lower()
+    res = []
+
+    Sources = []
+    for Len in reversed(range(3, len(word)+1)):
+        for start in range(0, len(word)):
+            end = start + Len
+            if end > len(word):
+                break
+            bef, chunk, after = word[:start], word[start:end], word[end:]
+            if userwords.find(chunk, prefix_match=1):
+                if bef:
+                    r1 = split_into_chunks(bef)
+                    for w in r1:
+                        res.append(w)
+                res.append(chunk)
+                if after:
+                    r2 = split_into_chunks(after)
+                    for w in r2:
+                        res.append(w)
+                return res
+    return [word]
+
+
 def match_names(a, b):
     """
     Takes lists of names (key names) and matches
@@ -95,33 +129,43 @@ def match_names(a, b):
     Res = []
 
     """ exact """
-    _a = [ (x.lower(), x) for x in a ]
-    _b = [ (x.lower(), x) for x in b ]
-    _matched_a, _matched_b = set(), set()
-    for i, name1 in enumerate(_a):
-        if i in _matched_a:
-            continue
-        for j, name2 in enumerate(_b):
-            if j in _matched_b:
+    def exact_match(a,b):
+        Res = []
+        _a = [ (x.lower(), x) for x in a ]
+        _b = [ (x.lower(), x) for x in b ]
+        _matched_a, _matched_b = set(), set()
+        for i, name1 in enumerate(_a):
+            if i in _matched_a:
                 continue
-            if name1[0] == name2[0]:
-                Res.append( (1.0, name1[1], name2[1]) )
-                _matched_a.add(i)
-                _matched_b.add(j)
-    print('Mapped: ')
-    for tup in Res:
-        print(tup)
-    a = list(map(lambda i: a[i], set(range(len(a))) - _matched_a))
-    b = list(map(lambda i: b[i], set(range(len(b))) - _matched_b))
+            for j, name2 in enumerate(_b):
+                if j in _matched_b:
+                    continue
+                if name1[0] == name2[0]:
+                    Res.append( ('exact', 1.0, name1[1], name2[1]) )
+                    _matched_a.add(i)
+                    _matched_b.add(j)
+        a = list(map(lambda i: a[i], set(range(len(a))) - _matched_a))
+        b = list(map(lambda i: b[i], set(range(len(b))) - _matched_b))
+        return (Res, a, b)
+    exact_matches, a, b = exact_match(a,b)
+
+    """ chunk matching """
+    def chunk_similarity(a,b):
+        Chunked = {}
+    
     print('Remaining: ')
     print(a)
     print(b)
 
-
+    print( split_into_chunks('camerametadata') )
+    print( split_into_chunks('username') )
+    print( split_into_chunks('deptName') )
+    print( split_into_chunks('department') )
+    print( split_into_chunks('apartment') )
 
 if __name__ == "__main__":
     a = ['fname', 'lname', 'firstname']
-    b = ['FName', 'lastname']
+    b = ['FName', 'lastname', 'cameraMetadata']
     match_names(a,b)
 
 
