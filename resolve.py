@@ -1,4 +1,4 @@
-#!/usr/bin/env/python3
+#!/usr/bin/env python3
 
 """
 Merge JSON schema specifications.
@@ -72,9 +72,60 @@ class TreeNode:
         print( "List of optional keys: " )
         print( ', '.join(optional) )
 
+def match_names(a, b):
+    """
+    Takes lists of names (key names) and matches
+    them based on their similarity. Returns a list of
+    tuples, where (p, u, v) means name u and name v
+    are assumed to be similar with a probability of p
+
+    Matching proceeds in phases:
+        1. Exact matching - If a name in list A exactly
+        matches a name from list B, they are matched together
+        and dropped from consideration for future phases.
+
+        2. Chunk similarity - Each name in listA is chunked into
+        pieces using an English dictionary and terms from user stories.
+        When comparing name x and name y, exact chunks common chunks
+
+        2. Edit distance matching - Levenshtein distance used
+        to order unmatched words from phase 1, and best-K matches
+        are added as 
+    """
+    Res = []
+
+    """ exact """
+    _a = [ (x.lower(), x) for x in a ]
+    _b = [ (x.lower(), x) for x in b ]
+    _matched_a, _matched_b = set(), set()
+    for i, name1 in enumerate(_a):
+        if i in _matched_a:
+            continue
+        for j, name2 in enumerate(_b):
+            if j in _matched_b:
+                continue
+            if name1[0] == name2[0]:
+                Res.append( (1.0, name1[1], name2[1]) )
+                _matched_a.add(i)
+                _matched_b.add(j)
+    print('Mapped: ')
+    for tup in Res:
+        print(tup)
+    a = list(map(lambda i: a[i], set(range(len(a))) - _matched_a))
+    b = list(map(lambda i: b[i], set(range(len(b))) - _matched_b))
+    print('Remaining: ')
+    print(a)
+    print(b)
+
 
 
 if __name__ == "__main__":
+    a = ['fname', 'lname', 'firstname']
+    b = ['FName', 'lastname']
+    match_names(a,b)
+
+
+    """
     test = JSONSchema('mongo.txt')
     for document in test['1']['entities']:
         root = TreeNode()
@@ -84,3 +135,4 @@ if __name__ == "__main__":
                 root.addChild(key)
         root.getFrequencies()
         print()
+    """
