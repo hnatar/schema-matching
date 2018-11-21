@@ -1,0 +1,131 @@
+@import url("https://fonts.googleapis.com/css?family=Overpass+Mono|Oxygen+Mono|Roboto");
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0; }
+
+a {
+  color: #aa6600;
+  text-decoration: none; }
+
+a:hover {
+  background-color: #dd8500;
+  color: #060506; }
+
+header {
+  font-size: 1rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #060506;
+  width: 100%;
+  color: #6b6861;
+  border-bottom: 1px solid #060506;
+  box-shadow: 0 -1rem 0.5rem 1rem #060506;
+  padding: 0.5rem; }
+  header > b {
+    color: #aaa8a1; }
+
+body {
+  font-size: 2vh;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  background: #2a2726;
+  color: #9e9b94;
+  line-height: 1.5;
+  margin: 1rem;
+  margin-top: 4rem; }
+
+input[type="text"] {
+  font: Roboto, Helvetica, Arial, sans-serif;
+  color: #9e9b94;
+  background: #060506;
+  flex: 1;
+  font-size: 1rem;
+  border: 1px solid black;
+  box-shadow: 2px 2px 0.5rem 1px #05060588;
+  padding: 0.25rem; }
+
+td {
+  padding-right: 1rem;
+  padding-left: 1rem;
+  border-right: 1px solid #fff1; }
+
+td:last-child {
+  border: 0; }
+
+tr:nth-child(odd) {
+  background: #1f1d1c; }
+
+tr:nth-child(1) {
+  background: #000;
+  box-shadow: 0 -1rem 0.5rem 1rem #060506; }
+  tr:nth-child(1) > td {
+    border-right: 0; }
+
+td {
+  font-family: 'Oxygen Mono', monospace; }
+
+table {
+  border: 2px solid #000;
+  color: #9e9b94; }
+
+.contentbox {
+  max-width: 40vw;
+  height: 40vh;
+  max-height: 40vh;
+  overflow: scroll;
+  border: 1px solid #000; }
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+  margin-bottom: 1rem; }
+  .flex-row > * {
+    margin-right: 1rem; }
+  .flex-row > *:last-child {
+    margin: 0; }
+
+.half-width {
+  display: flex;
+  flex-direction: column; }
+
+.text-area {
+  padding: 0.5rem;
+  background: #060506;
+  box-shadow: 2px 2px 0.5rem 1px #05060588;
+  max-height: 40vh;
+  height: 40vh;
+  overflow: scroll; }
+  .text-area > pre {
+    font-family: 'Oxygen Mono', monospace;
+    overflow: scroll; }
+    .text-area > pre > .new {
+      color: #fff;
+      transition: color 5s; }
+    .text-area > pre > .old {
+      color: #9e9b94;
+      transition: color 5s; }
+
+button {
+  font-size: 1rem;
+  display: flex;
+  font-family: 'Overpass Mono';
+  padding: 1rem;
+  background: #000;
+  box-shadow: 2px 2px 0.5rem 1px #05060588;
+  margin: 0.25rem;
+  padding-left: 3rem;
+  padding-right: 3rem;
+  color: #9e9b94; }
+  button > span {
+    flex: 1;
+    padding: 1rem;
+    border-bottom: 3px solid #111; }
+  button:hover > span {
+    border-color: #aa6600; }
+
+/*# sourceMappingURL=style.css.map */

@@ -1,0 +1,78 @@
+<html>
+  <head>
+    <title>Schema Matching - View Database</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script type="text/javascript" src="jquery.js"></script>
+  </head>
+  <body>
+      <header>
+          Schema Matching - 
+          <a href="index.html">name</a> |
+          <a href="index.html">index</a> |
+          <a href="index.html">viewdb</a>
+      </header>
+      <div class="flex-row" style="flex-wrap: 0;">
+          <div class="half-width">
+              <p>&nbsp;</p>
+              <p>Verify data if instance level similarity seems wrong (usually preprocessing issue)</p>
+              <div class="flex-row">
+                <input type="text" id="text_db1" value="EDM"></input>
+                <input type="text" id="text_col1" value="account"></input>
+                <input type="text" id="text_field1" value=""></input>
+              </div>
+              <small style="font-size: 0.6rem; text-shadow: 0px 1px #050505; color: #666; text-transform: uppercase; letter-spacing: 0.1rem;"><center>(scroll to see rest of table)</center></small>
+              <!--- AJAX calls place data inside this div -->
+              <div class="contentbox"><div id="content1"></div></div>
+          </div>
+          <div class="half-width">
+              <p>&nbsp;</p>
+              <p>(Use this to compare with first field if required)</p>
+              <div class="flex-row">
+                <input type="text" id="text_db2" value="EDM"></input>
+                <input type="text" id="text_col2" value="baddriverreports"></input>
+                <input type="text" id="text_field2" value=""></input>
+              </div>
+              <small style="font-size: 0.6rem; text-shadow: 0px 1px #050505; color: #666; text-transform: uppercase; letter-spacing: 0.1rem;"><center>(scroll to see rest of table)</center></small>
+              <!--- AJAX calls place data inside this div -->
+              <div class="contentbox"><div id="content2"></div></div>
+          </div>
+      </div>
+      <script type="text/javascript">
+          $( () => {
+              function log(msg) {
+                  $("#console").html( $("#console").html() + '\n' + msg )
+                  document.getElementById('console').scrollIntoView(false);
+              }
+              for(let i in [1, 2]) {
+                  $('#content' + i.toString()).on( 'click', 'a', function(e) {
+                      e.preventDefault()
+                      let Path = $(this).attr('data-path')
+                      let Msg = `Adding ${Path} to similarity matching.`
+                      // log(Msg)
+                  })
+              }
+              function query_mongo(i) {
+                  i = i.toString()
+                  let Field = $('#text_field' + i).val()
+                  let Col = $('#text_col' + i).val()
+                  let DB = $('#text_db' + i).val()
+                  $.get(`http://localhost:4000/fetch/${DB}/${Col}/${Field}`, (data) => {
+                      $('#content' + i).html(data)
+                  })
+              }
+              for(let i of [1,2]) {
+                  $('#text_db' + i.toString()).on('input', () => query_mongo(i))
+                  $('#text_col' + i.toString()).on('input', () => query_mongo(i))
+                  $('#text_field' + i.toString()).on('input', () => query_mongo(i))
+              }
+
+              $.get(`http://localhost:4000/fetch/EDM/account`, (data) => {
+                  $('#content1').html(data)
+              })
+              $.get(`http://localhost:4000/fetch/EDM/baddriverreports`, (data) => {
+                  $('#content2').html(data)
+              })
+          })
+      </script>
+  </body>
+</html>

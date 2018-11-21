@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css?family=Overpass+Mono|Oxygen+Mono|Roboto');
+
+$font: Roboto, Helvetica, Arial, sans-serif;
+$color: #9e9b94;
+$bcol: #151214;
+$bg: #2a2726;
+$dark: #060506;
+$link: #aa6600;
+
+*
+{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+}
+
+a {
+    color: $link;
+    text-decoration: none;
+}
+a:hover {
+    background-color: lighten($link, 10%);
+    color: $dark;
+}
+
+header
+{
+    font-size: 1rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: #060506;
+    width: 100%;
+    color: darken($color, 20%);
+    border-bottom: 1px solid #060506;
+    box-shadow: 0 -1rem 0.5rem 1rem #060506;
+    padding: 0.5rem;
+    > b {
+        color: lighten($color, 5%);
+    }
+}
+
+body
+{
+    font-size: 2vh;
+    font-family: $font;
+    background: $bg;
+    color: $color;
+    line-height: 1.5;
+    margin: 1rem;
+    margin-top: 4rem;
+}
+
+input[type="text"] {
+    font: $font;
+    color: $color;
+    background: $dark;
+    flex: 1;
+    font-size: 1rem;
+    border: 1px solid darken($color, 60%);
+    box-shadow: 2px 2px 0.5rem 1px #05060588;
+    padding: 0.25rem;
+}
+
+td {
+    padding-right: 1rem;
+    padding-left: 1rem;
+    border-right: 1px solid #fff1;
+}
+td:last-child { border: 0; }
+
+tr:nth-child(odd) {
+    background: darken($bg, 4%);
+}
+tr:nth-child(1) {
+    & > td {
+        border-right: 0;
+    }
+    background: #000;
+    box-shadow: 0 -1rem 0.5rem 1rem #060506;
+}
+td {
+    font-family: 'Oxygen Mono', monospace;
+}
+table {
+    border: 2px solid #000;
+    color: $color;
+}
+
+.contentbox {
+    max-width: 40vw;
+    height: 40vh;
+    max-height: 40vh;
+    overflow: scroll;
+    border: 1px solid #000;
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    > * {
+        margin-right: 1rem;
+    }
+    > *:last-child {
+        margin: 0;
+    }
+
+}
+
+.half-width {
+    display: flex;
+    flex-direction: column;
+}
+
+.text-area {
+    > pre {
+        font-family: 'Oxygen Mono', monospace;
+        overflow: scroll;
+        > .new {
+            color: #fff;
+            transition: color 5s;
+        }
+        > .old {
+            color: $color;
+            transition: color 5s;
+        }
+    }
+    padding: 0.5rem;
+    background: $dark;
+    box-shadow: 2px 2px 0.5rem 1px #05060588;
+    max-height: 40vh;
+    height: 40vh;
+    overflow: scroll;
+}
+
+button {
+    font-size: 1rem;
+    display: flex;
+    font-family: 'Overpass Mono';
+    padding: 1rem;
+    background: #000;
+    box-shadow: 2px 2px 0.5rem 1px #05060588;
+    margin: 0.25rem;
+    padding-left: 3rem;
+    padding-right: 3rem;
+    color: $color;
+    > span {
+        flex: 1;
+        padding: 1rem;
+        border-bottom: 3px solid #111;
+    }
+    &:hover > span {
+        border-color: $link;
+    }
+}
