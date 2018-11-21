@@ -1,0 +1,33 @@
+Moblle App User uploads Video and Video Metadata (location, timestamp, etc) to the Report Poster's Account.
+Report Poster adds Report Description and posts the Unreviewed Bad Driver Report to a Review Queue.
+Report Reviewer reviews Unreviewed Bad Driver Reports from the Review Queue.
+When a Bad Driver Report is verified by at least one independent Report Reviewer, it is added to the Bad Driver Database.
+It remains in the Review Queue until it has been verified by 3 independent Report Reviewers.
+Report Consumer (e.g. insurance company) queries by license plate number and can see Reviewed Bad Driver Reports.
+A Bad Driver Report shall be deemed rejected if it has received more than one review with a score of less than 40 percent.
+As a user, I must have a unique username.
+The system only accepts properly formatted password.
+The system only works for resgistered user
+As a user, I must have valid phone/email
+As a user, I must have privileges
+As a user, I must have username in the databse
+As a user, I must have valid credentials to login to the system
+The login information must match credentials so that a user can access the system
+The user should be able to continue recording the video
+The resolution should be 1080p
+The video must be sufficient to recognize license plate numbers
+The video should contain metadata tags
+The sysem should record license Plate number in each report description
+The system should have recorded video clip
+The system should be able to identify license plate number
+Must have unreviewed reports in the queue.
+As a reviewer, I must verify license plate number
+Reviewer must be logged in to the system
+The system must have a voice recognition module
+The mobile app have to record the video in the background while using the map app
+The video should be clear enough to figure out the licence number
+The system should record the metadata of video
+This process should be continuous
+the usernames should be consistent with the DB's information 
+the username should be correct and the password should also be right at the same time
+Video cannot use excessive space on phone or cloud; equivalent to a 15 sec video at 30 FPS
